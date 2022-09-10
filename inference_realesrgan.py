@@ -2,6 +2,7 @@ import argparse
 import cv2
 import glob
 import os
+from pathlib import Path
 from basicsr.archs.rrdbnet_arch import RRDBNet
 
 from realesrgan import RealESRGANer
@@ -90,7 +91,8 @@ def main():
     if os.path.isfile(args.input):
         paths = [args.input]
     else:
-        paths = sorted(glob.glob(os.path.join(args.input, '*')))
+        extensions = ['.jpg', '.png', '.jpeg']
+        paths = sorted([str(x) for x in Path(args.input).glob('*') if x.suffix.lower() in extensions])
 
     for idx, path in enumerate(paths):
         imgname, extension = os.path.splitext(os.path.basename(path))
